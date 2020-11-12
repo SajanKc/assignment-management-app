@@ -52,7 +52,7 @@ public class Assignment {
 		this.submissionDate = submissionDate;
 	}
 
-	public String isStatus() {
+	public String getStatus() {
 		return status;
 	}
 
