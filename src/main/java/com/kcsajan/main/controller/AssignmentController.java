@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -59,11 +60,22 @@ public class AssignmentController {
 		}
 	}
 
-//	@PutMapping("/{id}")
-//	public ResponseEntity<Assignment> updateAssignment(@PathVariable("id"), @RequestBody Assignment assignment){
-//		
-//	}
-//
+	@PutMapping("/{id}")
+	public ResponseEntity<Assignment> updateAssignment(@PathVariable("id") String id,
+			@RequestBody Assignment assignment) {
+		Optional<Assignment> assignmentData = assignmentRepository.findById(id);
+
+		if (assignmentData.isPresent()) {
+			Assignment _assignment = assignmentData.get();
+			_assignment.setTitle(assignment.getTitle());
+			_assignment.setDescription(assignment.getDescription());
+			_assignment.setSubmissionDate(assignment.getSubmissionDate());
+			_assignment.setStatus(assignment.getStatus());
+			return new ResponseEntity<>(assignmentRepository.save(_assignment), HttpStatus.OK);
+		}
+		return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+	}
+
 //	@DeleteMapping("/{id}")
 //	public ResponseEntity<HttpStatus> deleteAssignment(@PathVariable("id")){
 //		
